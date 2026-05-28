@@ -1908,24 +1908,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@capacitor/core@npm:^6.0.0":
-  version: 6.2.1
-  resolution: "@capacitor/core@npm:6.2.1"
-  dependencies:
-    tslib: "npm:^2.1.0"
-  checksum: 10c0/09562ab35724eda31f9675fba11905b60d8bc31831e1d4b8f08476c043ca5bf4e5f674ec5ba63a5544e759c2269cb23b6bfe246ad6e998ecceef3f0e8d0129bb
-  languageName: node
-  linkType: hard
-
-"@capacitor/preferences@npm:^6.0.0":
-  version: 6.0.4
-  resolution: "@capacitor/preferences@npm:6.0.4"
-  peerDependencies:
-    "@capacitor/core": ^6.0.0
-  checksum: 10c0/bc1bb22d06482a7423c57e29956cfed97067dac45506a28d97914d89ed4ef2ca2d9447fa7d0c730b2afaf810c2a80c89c85fa0bc8e3d8124d11a246599323064
-  languageName: node
-  linkType: hard
-
 "@code-dot-org/changelogs@workspace:*, @code-dot-org/changelogs@workspace:packages/changelogs":
   version: 0.0.0-use.local
   resolution: "@code-dot-org/changelogs@workspace:packages/changelogs"
@@ -2157,8 +2139,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@code-dot-org/notebook-lab@workspace:packages/labs/notebook"
   dependencies:
-    "@capacitor/core": "npm:^6.0.0"
-    "@capacitor/preferences": "npm:^6.0.0"
     "@code-dot-org/component-library": "workspace:*"
     "@code-dot-org/core": "workspace:*"
     "@code-dot-org/lint-config": "workspace:*"
