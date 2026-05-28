@@ -38,16 +38,12 @@ export async function reconcileAtBoot(): Promise<void> {
 // ---------------------------------------------------------------------------
 
 async function migrateSchemaVersion(): Promise<void> {
-  const {Preferences} = await import('@capacitor/preferences');
-  const {value} = await Preferences.get({key: 'meta:schema-version'});
-  const version = value !== null ? (JSON.parse(value) as number) : 0;
+  const raw = localStorage.getItem('meta:schema-version');
+  const version = raw !== null ? (JSON.parse(raw) as number) : 0;
 
   if (version < 2) {
     await migrateV1ToV2();
-    await Preferences.set({
-      key: 'meta:schema-version',
-      value: JSON.stringify(CURRENT_SCHEMA_VERSION),
-    });
+    localStorage.setItem('meta:schema-version', JSON.stringify(CURRENT_SCHEMA_VERSION));
   }
 
   if (version > CURRENT_SCHEMA_VERSION) {
@@ -119,9 +115,7 @@ async function removeOrphanedSeats(): Promise<void> {
     await writeSeatIndex(cleanedIndex);
   }
 
-  // Enumerate all Preferences keys to find orphaned profile/progress entries.
-  const {Preferences} = await import('@capacitor/preferences');
-  const {keys} = await Preferences.keys();
+  const keys = Object.keys(localStorage);
 
   const orphanedKeys: string[] = [];
   for (const key of keys) {

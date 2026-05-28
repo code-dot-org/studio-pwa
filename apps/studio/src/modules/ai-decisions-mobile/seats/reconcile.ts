@@ -35,19 +35,12 @@ export async function reconcileAtBoot(): Promise<void> {
 // ---------------------------------------------------------------------------
 
 async function migrateSchemaVersion(): Promise<void> {
-  const {Preferences} = await import('@capacitor/preferences');
-  const {value} = await Preferences.get({key: 'meta:schema-version'});
-  const version = value !== null ? (JSON.parse(value) as number) : 0;
+  const raw = localStorage.getItem('meta:schema-version');
+  const version = raw !== null ? (JSON.parse(raw) as number) : 0;
 
   if (version === 0) {
-    // Fresh install — write schema version, nothing else to migrate.
-    await Preferences.set({
-      key: 'meta:schema-version',
-      value: JSON.stringify(CURRENT_SCHEMA_VERSION),
-    });
+    localStorage.setItem('meta:schema-version', JSON.stringify(CURRENT_SCHEMA_VERSION));
   }
-  // version === CURRENT_SCHEMA_VERSION: no migration needed.
-  // version > CURRENT_SCHEMA_VERSION: downgrade — log and proceed read-only.
   if (version > CURRENT_SCHEMA_VERSION) {
     console.warn(
       `[reconcile] Storage schema version ${version} > app version ${CURRENT_SCHEMA_VERSION}. Some records may be unreadable.`,
@@ -85,10 +78,7 @@ async function removeOrphanedSeats(): Promise<void> {
     await writeSeatIndex(cleanedIndex);
   }
 
-  // Enumerate all Preferences keys to find orphaned profile/progress entries.
-  // @capacitor/preferences v7 exposes `keys()` for this.
-  const {Preferences} = await import('@capacitor/preferences');
-  const {keys} = await Preferences.keys();
+  const keys = Object.keys(localStorage);
 
   const orphanedKeys: string[] = [];
   for (const key of keys) {
